@@ -1,6 +1,7 @@
 # https://gitlab.com/nvidia/container-images/cuda/blob/master/dist/11.3.1/ubuntu16.04-x86_64/devel/cudnn8/Dockerfile
 
-FROM nvcr.io/nvidia/l4t-cuda:11.4.19-runtime
+# Pull l4t-pytorch:r35.2.1-pth2.0-py3 imagine and include CUDA cuDNN nvcc
+FROM nvcr.io/nvidia/l4t-pytorch:r35.2.1-pth2.0-py3
 LABEL maintainer avanetten
 
 ENV CUDNN_VERSION 8.6.0.166
@@ -27,8 +28,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 #     rm -rf /var/lib/apt/lists/*
 	
 # install requirements
-RUN apt-get update \
-  	&& apt-get install -y --no-install-recommends \
+# RUN apt-get update \
+#   	&& libopencv-dev \
+# 	python3-opencv \
+# 	&& apt-get clean \
+# 	&& rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update \ 
+	&& apt-get install -y --no-install-recommends \
 	    bc \
 	    bzip2 \
         apt-utils \
@@ -52,12 +59,12 @@ RUN apt-get update \
 		tmux \
 	    wget \
 	    build-essential \
-        libopencv-dev \
-        python3-opencv \
+		python3-opencv \
         eog \
         cmake \
 	  && apt-get clean \
 	  && rm -rf /var/lib/apt/lists/*
+
 
 SHELL ["/bin/bash", "-c"]
 ENV PATH /opt/conda/bin:$PATH
